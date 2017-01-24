@@ -13,12 +13,10 @@ function parseInput(){
 
 		var shortened = line.replace(hexPat, "'");
 		shortened = shortened.replace(/\\./g, "'");
-		shortened = shortened.replace(/^./g, "");
-		shortened = shortened.replace(/.$/g, "");
 		console.log("shortened: " + shortened);
 		console.log("lenght of the shortened string: " + shortened.length);
 
-		totData += shortened.length;
+		totData += shortened.length - 2;
 
 	}
 

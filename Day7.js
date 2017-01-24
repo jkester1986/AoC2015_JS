@@ -10,6 +10,8 @@ function parseInput(){
     var patLeft = /^(\d+|\w+)\sLSHIFT\s(\d+)\s->\s(\w+)$/;
 
     var dict = {};
+	var part2 = true;//change back to false for part 1
+
 	var whatsLeft = [];
 
     while(lines.length > 0){//will remove the line when the direction is able to be followed
@@ -19,13 +21,16 @@ function parseInput(){
                 if(isNaN(match[1])){//if first group is not a number
                     if(match[1] in dict){//if the match is in the dictionary, we can do something
 						var val = dict[match[1]];
-						dict[match[2]] = match[1];
+						dict[match[2]] = val;
 
                     }
 					else whatsLeft.push(line);//can't follow directions yet
                 }
                 else{//first group is a number
-                    dict[match[2]] = match[1];
+					if(match[1] == 14146 && part2){//only runs for part 2
+						dict['b'] = 956;
+					}
+                    else dict[match[2]] = match[1];
                 }
             }
             else if(patAnd.test(line)){//AND
@@ -113,13 +118,20 @@ function parseInput(){
 				if(isNaN(match[1])){
 					if(match[1] in dict){
 						var val =  ~(dict[match[1]] & 0xFFFF);//converts to 16-bit;
+						val = val >>> 0;//get rid of "sign"
+						val = val & 0xFFFF;//turn back into 16-bit
+
 						dict[match[2]] = val;
 						console.log("not val: " + val);
 					}
 					else whatsLeft.push(line);
 				}
 				else{
+
 					var val = ~(match[1] & 0xFFFF);//converts to 16-bit
+					val = val >>> 0;
+					val = val & 0xFFFF;
+
 					dict[match[2]] = val;
 					console.log("not val: " + val);
 				}
@@ -131,7 +143,7 @@ function parseInput(){
 						var val = dict[match[1]] & 0xFFFF;
 						val = val >> match[2];
 
-						dict[match[2]] = val;
+						dict[match[3]] = val;
 						console.log("right shift val: " + val);
 					}
 					else whatsLeft.push(line);
@@ -139,7 +151,7 @@ function parseInput(){
 				else{
 					var val = match[1] & 0xFFFF;
 					val = val >> match[2];
-					dict[match[2]] = val;
+					dict[match[3]] = val;
 					console.log("right shift val: " + val);
 				}
             }
@@ -149,7 +161,7 @@ function parseInput(){
 					if(match[1] in dict){
 						var val = dict[match[1]] & 0xFFFF;
 						val = val << match[2];
-						dict[match[2]] = val;
+						dict[match[3]] = val;
 						console.log("right shift val: " + val);
 					}
 					else whatsLeft.push(line);
@@ -157,7 +169,7 @@ function parseInput(){
 				else{
 					var val = match[1] & 0xFFFF;
 					val = val << match[2];
-					dict[match[2]] = val;
+					dict[match[3]] = val;
 					console.log("right shift val: " + val);
 				}
             }
@@ -167,14 +179,11 @@ function parseInput(){
             }
         }
 
-        for(i in dict) {
-            console.log (i, dict[i]);
-        }
-
 		lines = whatsLeft;
-		console.log("Lines left: " + lines.length);
 		whatsLeft = [];
     }
 
+
+	console.log("The value at a is: " + dict['a']);
 
 }

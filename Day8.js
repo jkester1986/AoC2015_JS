@@ -2,27 +2,25 @@ function parseInput(){
 	var text = document.getElementById("text").value;
 	var lines = text.split('\n');
 
-	var hexPat = /\\x../g;
-
 	var totChars = 0;
 	var totData = 0;
+	var totExpanded = 0;
 
 	for(line of lines){
-		console.log("length of the string: " + line.length);
 		totChars += line.length;
 
-		var shortened = line.replace(hexPat, "'");
+		var shortened = line.replace(/\\x[0-9a-f]{2}/g, "'");
 		shortened = shortened.replace(/\\./g, "'");
-		console.log("shortened: " + shortened);
-		console.log("lenght of the shortened string: " + shortened.length);
+		shortened = shortened.replace(/^\"/, "");
+		shortened = shortened.replace(/\"$/, "");
+		totData += shortened.length;
 
-		totData += shortened.length - 2;
-
+		var lengthened = line.replace(/[\"\\]/g, "''" );
+		lengthened = "\"" + lengthened + "\"";
+		totExpanded += lengthened.length;
 	}
 
-	console.log("difference: " + (totChars - totData));
-
-
-
+	console.log("difference between original and shortened: " + (totChars - totData));
+	console.log("difference between original and lengthened: " + (totExpanded - totChars));
 
 }

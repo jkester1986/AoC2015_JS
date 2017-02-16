@@ -19,27 +19,25 @@ function parseInput(){
 
 	}
 
-	//console.log(distances);
-	//console.log("locations: " + locations);
-
-	for(loc in locations){//for every location
-		var locs = Object.assign(locations);
-		console.log("locs: " + locs);
+	for(loc in locations){
 		console.log("starting location is: " + locations[loc]);
-		navPaths(0, locations[loc], locs);
+		navPaths(0, locations[loc], locations);
 	}
 
 	console.log("shortest distance is: " + shortest);
 
 }
 
-function navPaths(totDistance, currentLoc, remaining){
+function navPaths(totDistance, currentLoc, whatsLeft){
 	//first remove currentLoc from list of remaining;
+
+	var remaining = whatsLeft.slice();
 	var index = remaining.indexOf(currentLoc);
-	var removed  = Object.assign(remaining[index]);
 	remaining.splice(index, 1);
+
 	console.log("");
 	console.log("remaining locations: " + remaining);
+
 	console.log("totDistance: " + totDistance);
 
 	//get all locations that currentLoc could go to (remaining),
@@ -50,7 +48,7 @@ function navPaths(totDistance, currentLoc, remaining){
 			shortest = totDistance;
 		}
 	}
-	else{
+	else if(totDistance < shortest){
 		for(next in remaining){
 			console.log("next location is: " + remaining[next]);
 			//get distance from currentLoc
@@ -66,5 +64,9 @@ function navPaths(totDistance, currentLoc, remaining){
 			navPaths((totDistance + distance), remaining[next], remaining);
 		}
 	}
+	else{
+		//there are remaining locations, but the distance is already greater than the shortest current distance found
+	}
+
 
 }

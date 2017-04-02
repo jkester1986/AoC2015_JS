@@ -21,7 +21,6 @@ function parseInput(){
 	}
 
 	for(loc in locations){
-		console.log("starting location is: " + locations[loc]);
 		navPaths(0, locations[loc], locations);
 	}
 
@@ -36,12 +35,6 @@ function navPaths(totDistance, currentLoc, whatsLeft){
 	var remaining = whatsLeft.slice();
 	var index = remaining.indexOf(currentLoc);
 	remaining.splice(index, 1);
-
-	console.log("");
-	console.log("remaining locations: " + remaining);
-
-	console.log("totDistance: " + totDistance);
-
 	//get all locations that currentLoc could go to (remaining),
 	//and for each one, navPaths again with new remaining and new distance
 
@@ -53,23 +46,20 @@ function navPaths(totDistance, currentLoc, whatsLeft){
 			longest = totDistance;
 		}
 	}
-	else if(totDistance < shortest){
+	else {
 		for(next in remaining){
-			console.log("next location is: " + remaining[next]);
 			//get distance from currentLoc
 			//how to check if both values are in dictionary of distance?
 			var distance = 0;
 			Object.keys(distances).forEach(function(key) {
 			    value = distances[key];
 			    if(value.includes(currentLoc) && value.includes(remaining[next])){
-					console.log("distance between " + currentLoc + " and " + remaining[next] + " is: " + key);
 					distance = parseInt(key);
 				}
 			});
 			navPaths((totDistance + distance), remaining[next], remaining);
 		}
 	}
-	else{}
 
 
 }

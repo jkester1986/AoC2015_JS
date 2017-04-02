@@ -1,5 +1,6 @@
 var distances = {};
 var shortest = 100000000;
+var longest = 0;
 
 function parseInput(){
 	var text = document.getElementById("text").value;
@@ -25,6 +26,7 @@ function parseInput(){
 	}
 
 	console.log("shortest distance is: " + shortest);
+	console.log("longest distance is: " + longest);
 
 }
 
@@ -47,6 +49,9 @@ function navPaths(totDistance, currentLoc, whatsLeft){
 		if(totDistance < shortest){
 			shortest = totDistance;
 		}
+		if(totDistance > longest){
+			longest = totDistance;
+		}
 	}
 	else if(totDistance < shortest){
 		for(next in remaining){
@@ -64,9 +69,7 @@ function navPaths(totDistance, currentLoc, whatsLeft){
 			navPaths((totDistance + distance), remaining[next], remaining);
 		}
 	}
-	else{
-		//there are remaining locations, but the distance is already greater than the shortest current distance found
-	}
+	else{}
 
 
 }
